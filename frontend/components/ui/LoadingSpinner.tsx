@@ -4,10 +4,11 @@ import { cn } from '@/lib/utils';
 
 export interface LoadingSpinnerProps {
   size?: 'sm' | 'md' | 'lg';
+  text?: string;
   className?: string;
 }
 
-export default function LoadingSpinner({ size = 'md', className }: LoadingSpinnerProps) {
+export default function LoadingSpinner({ size = 'md', text, className }: LoadingSpinnerProps) {
   const sizes = {
     sm: 'h-4 w-4 border-2',
     md: 'h-8 w-8 border-3',
@@ -15,16 +16,22 @@ export default function LoadingSpinner({ size = 'md', className }: LoadingSpinne
   };
 
   return (
-    <div
-      className={cn(
-        'inline-block rounded-full border-solid border-transparent border-t-primary-500 border-r-accent-500 animate-spin',
-        sizes[size],
-        className
+    <div className={cn('flex flex-col items-center justify-center gap-3', className)}>
+      <div
+        className={cn(
+          'inline-block rounded-full border-solid border-transparent border-t-primary-500 border-r-accent-500 animate-spin',
+          sizes[size]
+        )}
+        role="status"
+        aria-label={text || "Loading"}
+      >
+        <span className="sr-only">{text || "Loading..."}</span>
+      </div>
+      {text && (
+        <p className="text-sm text-slate-600 dark:text-slate-400 font-medium">
+          {text}
+        </p>
       )}
-      role="status"
-      aria-label="Loading"
-    >
-      <span className="sr-only">Loading...</span>
     </div>
   );
 }
